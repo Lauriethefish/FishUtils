@@ -20,7 +20,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, AutoSettingsFlowCoordinator, HMUI::FlowCoordina
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_OVERRIDE_METHOD(void, BackButtonWasPressed, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "BackButtonWasPressed", 1), HMUI::ViewController* topViewController);
 
-    REGISTER_FUNCTION(AutoSettingsFlowCoordinator,
+    REGISTER_FUNCTION(
         REGISTER_FIELD(playlistOverridesView);
         REGISTER_FIELD(thresholdsView);
 
@@ -39,7 +39,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, AutoSettingSelectionViewController, HMUI::ViewC
     DECLARE_METHOD(void, OpenSettingConfigurationView);
     DECLARE_METHOD(void, CloseSettingConfigurationView);
 
-    REGISTER_FUNCTION(AutoSettingSelectionViewController,
+    REGISTER_FUNCTION(
         REGISTER_FIELD(flowCoordinator);
         REGISTER_FIELD(settingEnabledToggle);
         REGISTER_FIELD(wasSettingConfigurationViewOpen);
@@ -66,7 +66,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, PlaylistOverridesViewController, HMUI::ViewCont
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
-    REGISTER_FUNCTION(AutoSettingSelectionViewController,
+    REGISTER_FUNCTION(
         REGISTER_FIELD(setSettingToDropdown);
         REGISTER_FIELD(enabledLayoutGameObject);
 
@@ -88,7 +88,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, ThresholdsViewController, HMUI::ViewController,
 
     DECLARE_METHOD(void, RefreshThresholdSettings);
 
-    REGISTER_FUNCTION(ThresholdsViewController,
+    REGISTER_FUNCTION(
         REGISTER_FIELD(mainLayoutTransform);
         REGISTER_FIELD(thresholdsObject);
         REGISTER_FIELD(parameterDropdown);

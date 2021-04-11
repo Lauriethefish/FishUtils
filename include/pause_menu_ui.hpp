@@ -14,7 +14,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, PauseOptionsFlowCoordinator, HMUI::FlowCoordina
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_OVERRIDE_METHOD(void, BackButtonWasPressed, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "BackButtonWasPressed", 1), HMUI::ViewController* topViewController);
 
-    REGISTER_FUNCTION(PauseOptionsFlowCoordinator,
+    REGISTER_FUNCTION(
         REGISTER_METHOD(DidActivate);
         REGISTER_METHOD(BackButtonWasPressed);
     )
@@ -28,7 +28,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, PauseButtonRemappingsViewController, HMUI::View
 
     DECLARE_METHOD(void, Update);
 
-    REGISTER_FUNCTION(PauseButtonRemappingsViewController,
+    REGISTER_FUNCTION(
         REGISTER_FIELD(overridesObject);
         REGISTER_FIELD(previewText);
 
@@ -47,7 +47,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, ResumeSpeedViewController, HMUI::ViewController
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_METHOD(void, RefreshScoreSubmissionText);
 
-    REGISTER_FUNCTION(ResumeSpeedViewController,
+    REGISTER_FUNCTION(
         REGISTER_FIELD(scoreSubmissionText);
 
         REGISTER_METHOD(DidActivate);
@@ -58,7 +58,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, ResumeSpeedViewController, HMUI::ViewController
 DECLARE_CLASS_CODEGEN(FishUtils, PauseConfirmationViewController, HMUI::ViewController,
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
-    REGISTER_FUNCTION(PauseConfirmationViewController,
+    REGISTER_FUNCTION(
         REGISTER_METHOD(DidActivate);
     )
 )
