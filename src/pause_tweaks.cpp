@@ -245,8 +245,7 @@ namespace FishUtils::PauseTweaks {
             // Disable score submission if the amount of time was decreased
             if(speed < 1.0) {
                 getLogger().info("Disabling score submission . . .");
-                // TODO: REMEMBER TO RE-ADD SCORE SUBMISSION DISABLING
-                //bs_utils::Submission::disable(getModInfo());
+                bs_utils::Submission::disable(getModInfo());
             }
 
             // Set the speed of the resume animation
@@ -260,8 +259,7 @@ namespace FishUtils::PauseTweaks {
     // Manually re-enable score submission when scoring starts, because bs-utils isn't doing it automatically . . .
     MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, ScoreController* self) {
         getLogger().info("Re-enabling score submission . . .");
-        // TODO: REMEMBER TO RE-ADD SCORE SUBMISSION DISABLING
-        //bs_utils::Submission::enable(getModInfo());
+        bs_utils::Submission::enable(getModInfo());
         ScoreController_Start(self);
     }
 
