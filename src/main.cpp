@@ -12,6 +12,8 @@
 
 #include "custom-types/shared/register.hpp"
 
+#include "bs-utils/shared/utils.hpp"
+
 static ModInfo modInfo; // Stores the ID and version of our mod, and is sent to the modloader upon startup
 
 // Loads the config from disk using our modInfo, then returns it for use
@@ -42,6 +44,8 @@ extern "C" void setup(ModInfo& info) {
 
 // Called later on in the game loading - a good time to install function hooks
 extern "C" void load() {
+    bs_utils::Submission::enable(modInfo);
+
     getLogger().info("Calling il2cpp functions init");
     il2cpp_functions::Init();
     getLogger().info("Done");
