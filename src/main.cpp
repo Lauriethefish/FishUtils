@@ -51,19 +51,7 @@ extern "C" void load() {
     getLogger().info("Done");
 
     getLogger().info("Registering custom types . . .");
-    custom_types::Register::RegisterTypes<
-        FishUtils::SettingsFlowCoordinator,
-        FishUtils::MainSettingsViewController,
-        FishUtils::PauseOptionsFlowCoordinator,
-        FishUtils::PauseButtonRemappingsViewController,
-        FishUtils::PauseConfirmationViewController,
-        FishUtils::ResumeSpeedViewController,
-        FishUtils::GameStartOptionsViewController,
-        FishUtils::AutoSettingsFlowCoordinator,
-        FishUtils::AutoSettingSelectionViewController,
-        FishUtils::PlaylistOverridesViewController,
-        FishUtils::ThresholdsViewController
-    >();
+    custom_types::Register::AutoRegister();
     getLogger().info("Done");
 
     getConfig().Load();
@@ -73,6 +61,7 @@ extern "C" void load() {
     getConfig().Write();
 
     getLogger().info("Registering main flow coordinator . . .");
+    QuestUI::Init();
     QuestUI::Register::RegisterModSettingsFlowCoordinator<FishUtils::SettingsFlowCoordinator*>(modInfo);
     getLogger().info("Done");
 }

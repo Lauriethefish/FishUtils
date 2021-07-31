@@ -67,7 +67,7 @@ namespace FishUtils::PauseTweaks {
         // This is to allow adding more mappings in the future if necessary
         for(ButtonMapping mapping : mappings) {
             if(!mappingsValue.HasMember(mapping.saveName)) {
-                getLogger().info("Adding mapping " + mapping.saveName + " to config");
+                getLogger().info("Adding mapping %s to config", mapping.saveName.c_str());
                 bool enabledByDefault = mapping.saveName == "menuButton";
                 if(enabledByDefault) {
                     getLogger().info("Mapping enabled by default");
@@ -140,7 +140,7 @@ namespace FishUtils::PauseTweaks {
     static bool hasInducedPause = false;
     static bool wasPreviouslyAllDown = false;
 
-    MAKE_HOOK_OFFSETLESS(PlayerTransforms_Update, void, PlayerTransforms* self) {
+    MAKE_HOOK_MATCH(PlayerTransforms_Update, &PlayerTransforms::Update, void, PlayerTransforms* self) {
         PlayerTransforms_Update(self);
         if(!GetOverrideEnabled()) {return;} // If overriding the pause buttons is disabled return
         bool allDown = GetIfPauseButtonsPressed();
@@ -155,7 +155,7 @@ namespace FishUtils::PauseTweaks {
         }
     }
 
-    MAKE_HOOK_OFFSETLESS(PauseController_Pause, void, PauseController* self) {
+    MAKE_HOOK_MATCH(PauseController_Pause, &PauseController::Pause, void, PauseController* self) {
         // If overriding the pause buttons is disabled, don't do anything
         if(!GetOverrideEnabled()) {
             PauseController_Pause(self);
@@ -191,7 +191,7 @@ namespace FishUtils::PauseTweaks {
         }
     }
 
-    MAKE_HOOK_OFFSETLESS(PauseMenuManager_ContinueButtonPressed, void, PauseMenuManager* self) {
+    MAKE_HOOK_MATCH(PauseMenuManager_ContinueButtonPressed, &PauseMenuManager::ContinueButtonPressed, void, PauseMenuManager* self) {
         // Perform the confirmation if we need to
         bool isConfirmationEnabled = getConfig().config["confirmOnContinue"].GetBool();
         if(isConfirmationEnabled && !checkConfirmation(self->continueButton)) {return;} // Return if unconfirmed
@@ -199,7 +199,7 @@ namespace FishUtils::PauseTweaks {
         PauseMenuManager_ContinueButtonPressed(self);
     }
 
-    MAKE_HOOK_OFFSETLESS(PauseMenuManager_RestartButtonPressed, void, PauseMenuManager* self) {
+    MAKE_HOOK_MATCH(PauseMenuManager_RestartButtonPressed, &PauseMenuManager::RestartButtonPressed, void, PauseMenuManager* self) {
         // Perform the confirmation if we need to
         bool isConfirmationEnabled = getConfig().config["confirmOnRestart"].GetBool();
         if(isConfirmationEnabled && !checkConfirmation(self->restartButton)) {return;} // Return if unconfirmed
@@ -208,7 +208,7 @@ namespace FishUtils::PauseTweaks {
         PauseMenuManager_RestartButtonPressed(self);
     }
 
-    MAKE_HOOK_OFFSETLESS(PauseMenuManager_MenuButtonPressed, void, PauseMenuManager* self) {
+    MAKE_HOOK_MATCH(PauseMenuManager_MenuButtonPressed, &PauseMenuManager::MenuButtonPressed, void, PauseMenuManager* self) {
         // Perform the confirmation if we need to
         bool isConfirmationEnabled = getConfig().config["confirmOnMenu"].GetBool();
         if(isConfirmationEnabled && !checkConfirmation(self->backButton)) {return;} // Return if unconfirmed
@@ -230,14 +230,14 @@ namespace FishUtils::PauseTweaks {
 
     // Change the confirmation text back to default for the next time the pause menu is opened
     // This is done here, instead of in PauseMenuManager_ContinueButtonPressed, since otherwise you see the default text for a split second
-    MAKE_HOOK_OFFSETLESS(PauseAnimationController_ResumeFromPauseAnimationDidFinish, void, PauseAnimationController* self) {
+    MAKE_HOOK_MATCH(PauseAnimationController_ResumeFromPauseAnimationDidFinish, &PauseAnimationController::ResumeFromPauseAnimationDidFinish, void, PauseAnimationController* self) {
         RestoreButtonText();
         PauseAnimationController_ResumeFromPauseAnimationDidFinish(self);
     }
 
 
     // Called whenever the resume button is pressed while the game is paused
-    MAKE_HOOK_OFFSETLESS(PauseAnimationController_StartResumeFromPauseAnimation, void, PauseAnimationController* self) {
+    MAKE_HOOK_MATCH(PauseAnimationController_StartResumeFromPauseAnimation, &PauseAnimationController::StartResumeFromPauseAnimation, void, PauseAnimationController* self) {
         UnityEngine::Animator* animator = self->animator;
         float speed = getConfig().config["resumeTimeMultiplier"].GetFloat();
 
@@ -249,7 +249,7 @@ namespace FishUtils::PauseTweaks {
             }
 
             // Set the speed of the resume animation
-            getLogger().info("Setting pause animation speed to: " + std::to_string(speed));
+            getLogger().info("Setting pause animation speed to: %f", speed);
             animator->set_speed(speed);
         }
 
@@ -257,7 +257,7 @@ namespace FishUtils::PauseTweaks {
     }
 
     // Manually re-enable score submission when scoring starts, because bs-utils isn't doing it automatically . . .
-    MAKE_HOOK_OFFSETLESS(ScoreController_Start, void, ScoreController* self) {
+    MAKE_HOOK_MATCH(ScoreController_Start, &ScoreController::Start, void, ScoreController* self) {
         getLogger().info("Re-enabling score submission . . .");
         bs_utils::Submission::enable(getModInfo());
         ScoreController_Start(self);
@@ -265,31 +265,15 @@ namespace FishUtils::PauseTweaks {
 
 
     void InstallHooks() {
-        INSTALL_HOOK_OFFSETLESS(getLogger(), PlayerTransforms_Update,
-            il2cpp_utils::FindMethodUnsafe("", "PlayerTransforms", "Update", 0)
-        );
-        INSTALL_HOOK_OFFSETLESS(getLogger(), PauseController_Pause,
-            il2cpp_utils::FindMethodUnsafe("", "PauseController", "Pause", 0)
-        );
+        INSTALL_HOOK(getLogger(), PlayerTransforms_Update);
+        INSTALL_HOOK(getLogger(), PauseController_Pause);
 
-        INSTALL_HOOK_OFFSETLESS(getLogger(), PauseMenuManager_ContinueButtonPressed,
-            il2cpp_utils::FindMethodUnsafe("", "PauseMenuManager", "ContinueButtonPressed", 0)
-        );
-        INSTALL_HOOK_OFFSETLESS(getLogger(), PauseMenuManager_RestartButtonPressed,
-            il2cpp_utils::FindMethodUnsafe("", "PauseMenuManager", "RestartButtonPressed", 0)
-        );
-        INSTALL_HOOK_OFFSETLESS(getLogger(), PauseMenuManager_MenuButtonPressed, 
-            il2cpp_utils::FindMethodUnsafe("", "PauseMenuManager", "MenuButtonPressed", 0)
-        );
-        INSTALL_HOOK_OFFSETLESS(getLogger(), PauseAnimationController_ResumeFromPauseAnimationDidFinish,
-            il2cpp_utils::FindMethodUnsafe("", "PauseAnimationController", "ResumeFromPauseAnimationDidFinish", 0)
-        );
+        INSTALL_HOOK(getLogger(), PauseMenuManager_ContinueButtonPressed);
+        INSTALL_HOOK(getLogger(), PauseMenuManager_RestartButtonPressed);
+        INSTALL_HOOK(getLogger(), PauseMenuManager_MenuButtonPressed);
+        INSTALL_HOOK(getLogger(), PauseAnimationController_ResumeFromPauseAnimationDidFinish);
 
-        INSTALL_HOOK_OFFSETLESS(getLogger(), PauseAnimationController_StartResumeFromPauseAnimation, 
-            il2cpp_utils::FindMethodUnsafe("", "PauseAnimationController", "StartResumeFromPauseAnimation", 0)
-        );
-        INSTALL_HOOK_OFFSETLESS(getLogger(), ScoreController_Start, 
-            il2cpp_utils::FindMethodUnsafe("", "ScoreController", "Start", 0)
-        );
+        INSTALL_HOOK(getLogger(), PauseAnimationController_StartResumeFromPauseAnimation);
+        INSTALL_HOOK(getLogger(), ScoreController_Start);
     }
 }

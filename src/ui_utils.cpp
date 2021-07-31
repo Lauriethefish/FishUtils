@@ -41,6 +41,7 @@ namespace FishUtils::UIUtils {
 
     void CreateSeparatorLine(Transform* parent, Color color) {
         TextMeshProUGUI* separatorText = BeatSaberUI::CreateText(parent, "__________________________________________________");
+        
         separatorText->set_color(color);
         separatorText->set_alignment(TextAlignmentOptions::Center);
     }
@@ -87,6 +88,6 @@ namespace FishUtils::UIUtils {
             }
         }
 
-        getLogger().warning("Unable to set dropdown value - no index exists with name " + value);
+        getLogger().warning("Unable to set dropdown value - no index exists with name %s", value.c_str());
     }
 }

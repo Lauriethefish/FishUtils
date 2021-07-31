@@ -7,10 +7,10 @@ const float MAX_RESUME_SPEED = 20.0f;
 const float MIN_RESUME_SPEED = 0.05f;
 
 namespace FishUtils {
-    DEFINE_TYPE(PauseOptionsFlowCoordinator);
-    DEFINE_TYPE(PauseButtonRemappingsViewController);
-    DEFINE_TYPE(ResumeSpeedViewController);
-    DEFINE_TYPE(PauseConfirmationViewController);
+    DEFINE_TYPE(FishUtils, PauseOptionsFlowCoordinator);
+    DEFINE_TYPE(FishUtils, PauseButtonRemappingsViewController);
+    DEFINE_TYPE(FishUtils, ResumeSpeedViewController);
+    DEFINE_TYPE(FishUtils, PauseConfirmationViewController);
 
     void PauseOptionsFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if(!firstActivation) {return;}
@@ -98,7 +98,7 @@ namespace FishUtils {
 
     void PauseButtonRemappingsViewController::Update() {
         bool isPaused = PauseTweaks::GetIfPauseButtonsPressed();
-        getLogger().info("Preview update. Is paused: " + std::to_string(isPaused));
+        getLogger().info("Preview update. Is paused: %s", isPaused ? "true" : "false");
         if(isPaused) {
             previewText->set_text(il2cpp_utils::createcsstr("Your game would be paused"));
             previewText->set_color(Color::get_green());
@@ -110,13 +110,13 @@ namespace FishUtils {
 
     void PauseButtonRemappingsViewController::RefreshToggleText() {
         getLogger().info("Refreshing right/left handed toggle text");
-        getLogger().info("Is right handed: " + std::to_string(PauseTweaks::GetRightHanded()));
+        getLogger().info("Is right handed: %s", PauseTweaks::GetRightHanded() ? "true" : "false");
         int i = 0;
         for(Toggle* toggle : toggles) {
             PauseTweaks::ButtonMapping mapping = PauseTweaks::GetMappings()[i];
 
             std::string correctTextType = PauseTweaks::GetRightHanded() ? mapping.rightHandedName : mapping.name;
-            getLogger().info("Setting text to " + correctTextType);
+            getLogger().info("Setting text to %s", correctTextType.c_str());
             UIUtils::SetToggleText(toggle, correctTextType);
             i++;
         }
@@ -134,7 +134,7 @@ namespace FishUtils {
 
         std::function<void(float)> onResumeTimeChange = [this](float newValue) {
             getConfig().config["resumeTimeMultiplier"] = newValue;
-            getLogger().info("New Multiplier: " + std::to_string(newValue));
+            getLogger().info("New Multiplier: %f", newValue);
             this->RefreshScoreSubmissionText();
         };
         

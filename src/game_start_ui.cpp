@@ -4,7 +4,7 @@
 #include "game_start_tweaks.hpp"
 
 namespace FishUtils {
-    DEFINE_TYPE(GameStartOptionsViewController);
+    DEFINE_TYPE(FishUtils, GameStartOptionsViewController);
 
     void GameStartOptionsViewController::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if(!firstActivation) {return;}

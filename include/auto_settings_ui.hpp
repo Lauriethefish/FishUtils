@@ -19,14 +19,6 @@ DECLARE_CLASS_CODEGEN(FishUtils, AutoSettingsFlowCoordinator, HMUI::FlowCoordina
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_OVERRIDE_METHOD(void, BackButtonWasPressed, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "BackButtonWasPressed", 1), HMUI::ViewController* topViewController);
-
-    REGISTER_FUNCTION(
-        REGISTER_FIELD(playlistOverridesView);
-        REGISTER_FIELD(thresholdsView);
-
-        REGISTER_METHOD(DidActivate);
-        REGISTER_METHOD(BackButtonWasPressed);
-    )
 )
 
 DECLARE_CLASS_CODEGEN(FishUtils, AutoSettingSelectionViewController, HMUI::ViewController,
@@ -36,18 +28,8 @@ DECLARE_CLASS_CODEGEN(FishUtils, AutoSettingSelectionViewController, HMUI::ViewC
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
-    DECLARE_METHOD(void, OpenSettingConfigurationView);
-    DECLARE_METHOD(void, CloseSettingConfigurationView);
-
-    REGISTER_FUNCTION(
-        REGISTER_FIELD(flowCoordinator);
-        REGISTER_FIELD(settingEnabledToggle);
-        REGISTER_FIELD(wasSettingConfigurationViewOpen);
-
-        REGISTER_METHOD(DidActivate);
-        REGISTER_METHOD(OpenSettingConfigurationView);
-        REGISTER_METHOD(CloseSettingConfigurationView);
-    )
+    DECLARE_INSTANCE_METHOD(void, OpenSettingConfigurationView);
+    DECLARE_INSTANCE_METHOD(void, CloseSettingConfigurationView);
 
 public:
     FishUtils::AutoSettings::SettingType* selectedSetting;
@@ -66,13 +48,6 @@ DECLARE_CLASS_CODEGEN(FishUtils, PlaylistOverridesViewController, HMUI::ViewCont
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
-    REGISTER_FUNCTION(
-        REGISTER_FIELD(setSettingToDropdown);
-        REGISTER_FIELD(enabledLayoutGameObject);
-
-        REGISTER_METHOD(DidActivate);
-    )
-
 public:
     FishUtils::AutoSettings::SettingConfiguration* setting;
     PlaylistToggles playlistToggles;
@@ -86,17 +61,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, ThresholdsViewController, HMUI::ViewController,
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
-    DECLARE_METHOD(void, RefreshThresholdSettings);
-
-    REGISTER_FUNCTION(
-        REGISTER_FIELD(mainLayoutTransform);
-        REGISTER_FIELD(thresholdsObject);
-        REGISTER_FIELD(parameterDropdown);
-        REGISTER_FIELD(flipOptionsToggle);
-
-        REGISTER_METHOD(DidActivate);
-        REGISTER_METHOD(RefreshThresholdSettings);
-    )
+    DECLARE_INSTANCE_METHOD(void, RefreshThresholdSettings);
 
 public:
     FishUtils::AutoSettings::SettingConfiguration* setting;

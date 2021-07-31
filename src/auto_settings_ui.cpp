@@ -10,10 +10,10 @@ using namespace System::Collections::Generic;
 #include "GlobalNamespace/IBeatmapLevelPack.hpp"
 
 namespace FishUtils {
-    DEFINE_TYPE(AutoSettingsFlowCoordinator);
-    DEFINE_TYPE(AutoSettingSelectionViewController);
-    DEFINE_TYPE(PlaylistOverridesViewController);
-    DEFINE_TYPE(ThresholdsViewController);
+    DEFINE_TYPE(FishUtils, AutoSettingsFlowCoordinator);
+    DEFINE_TYPE(FishUtils, AutoSettingSelectionViewController);
+    DEFINE_TYPE(FishUtils, PlaylistOverridesViewController);
+    DEFINE_TYPE(FishUtils, ThresholdsViewController);
 
     void AutoSettingsFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if(!firstActivation) {return;}
@@ -73,7 +73,7 @@ namespace FishUtils {
         HMUI::SimpleTextDropdown* selectSettingDropdown = BeatSaberUI::CreateDropdown(mainLayoutTransform, "Available Settings", availableSettings[0], availableSettings, onSelectedSettingChange);
 
         this->settingEnabledToggle = BeatSaberUI::CreateToggle(mainLayoutTransform, "Automatically Set Setting", [this](bool newValue){
-            getLogger().info("Processing setting enabled change. New value: " + std::string(newValue ? "true" : "false"));
+            getLogger().info("Processing setting enabled change. New value: %s", newValue ? "true" : "false");
             // Even if the new setting is enabled as well, we need to close the setting view so that DidActivate is called again, thus refreshing it for the new setting
             this->CloseSettingConfigurationView();
 
@@ -130,7 +130,7 @@ namespace FishUtils {
                 if(newValue) {
                     getLogger().info("Setting to default setting type . . .");
                     std::string defaultSetting = this->setting->settingType->options[0];
-                    getLogger().info(defaultSetting);
+                    getLogger().info("%s", defaultSetting.c_str());
                     this->setting->playlistOverrideSetting = defaultSetting;
                 }   else    {
                     this->setting->playlistOverrideSetting = "";
@@ -183,16 +183,16 @@ namespace FishUtils {
                 // Help all of the playlists to actually fit in the layout
                 toggleText->set_overflowMode(TextOverflowModes::Ellipsis);
                 toggleText->set_fontSize(2.5);
-                getLogger().info("Inserting with name " + playlistName);
+                getLogger().info("Inserting with name %s", playlistName.c_str());
                 this->playlistToggles.push_back({playlistName, toggle}); // Store the playlist toggles for later so that we can change them when moving between multiple settings
             }
         }
 
         bool isEnabled = !this->setting->playlistOverrideSetting.empty(); // playlistOverrideSetting is empty if this is disabled
-        getLogger().info("Is setting enabled: " + std::string(isEnabled ? "true" : "false"));
+        getLogger().info("Is setting enabled: %s", isEnabled ? "true" : "false");
         UIUtils::SetToggleForceNotify(enableToggle, isEnabled);
         
-        getLogger().info("Setting options for setting type " + setting->settingType->saveName + " to playlists UI");
+        getLogger().info("Setting options for setting type %s to playlists UI", setting->settingType->saveName.c_str());
         List_1<Il2CppString*>* optionsList = List_1<Il2CppString*>::New_ctor();
         for(std::string optionName : setting->settingType->options) {
             optionsList->Add(il2cpp_utils::createcsstr(optionName));
@@ -200,7 +200,7 @@ namespace FishUtils {
         this->setSettingToDropdown->SetTexts(reinterpret_cast<IReadOnlyList_1<Il2CppString*>*>(optionsList));
 
         // Since we may have just swapped from a different setting, we need to update all of the toggles to be in the correct configuration
-        getLogger().info("Updating playlist toggles . . . Length: " + std::to_string(this->playlistToggles.size()));
+        getLogger().info("Updating playlist toggles . . . Length: %lu", this->playlistToggles.size());
         for(auto pair : playlistToggles) {
             std::string playlistName = pair.first;
             Toggle* toggle = pair.second;
@@ -223,13 +223,13 @@ namespace FishUtils {
             }
 
             this->parameterDropdown = BeatSaberUI::CreateDropdown(mainLayoutTransform, "Map Parameter", mapElements[0], mapElements, [this](std::string newValue){
-                getLogger().info("Changing map element type to " + newValue);
+                getLogger().info("Changing map element type to %s", newValue.c_str());
                 this->setting->SetConfigureBasedOn(AutoSettings::GetMapElementType(newValue, false));
                 this->RefreshThresholdSettings();
             });
 
             this->flipOptionsToggle = BeatSaberUI::CreateToggle(mainLayoutTransform, "Flip Options", [this](bool newValue){
-                getLogger().info("Changing flip options to " + std::string(newValue ? "true" : "false"));
+                getLogger().info("Changing flip options to %s", newValue ? "true" : "false");
                 this->setting->SetFlipOptions(newValue);
                 this->RefreshThresholdSettings();
             });
@@ -257,8 +257,8 @@ namespace FishUtils {
         Transform* thresholdsLayoutTransform = thresholdsLayout->get_rectTransform();
 
         int i = 0;
-        getLogger().info("Setting has option count " + std::to_string(this->setting->settingType->options.size()));
-        getLogger().info("Setting has theshold count " + std::to_string(this->setting->thresholds.size()));
+        getLogger().info("Setting has option count %lu", this->setting->settingType->options.size());
+        getLogger().info("Setting has theshold count %lu", this->setting->thresholds.size());
         for(std::string settingOption : this->setting->options) {
             BeatSaberUI::CreateText(thresholdsLayoutTransform, settingOption);
             if(i < setting->thresholds.size()) {

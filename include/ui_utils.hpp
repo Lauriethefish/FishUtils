@@ -43,7 +43,7 @@ namespace FishUtils::UIUtils {
 
     // Creates a horizontal separator line thing to show a divide between two areas of a UI
     // Blue by default because this is FishCore
-    void CreateSeparatorLine(Transform* parent, Color color = Color::get_cyan());
+    void CreateSeparatorLine(Transform* parent, Color color = {0, 0.5, 0.5, 1.0});
 
     // Applies a round-rect-panel background using QuestUI's backgroundable
     void ApplyRectPanelBackground(GameObject* gameObject);

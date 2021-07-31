@@ -8,8 +8,8 @@
 namespace FishUtils {
     static std::string TITLE = "FishUtils Settings";
 
-    DEFINE_TYPE(SettingsFlowCoordinator);
-    DEFINE_TYPE(MainSettingsViewController);
+    DEFINE_TYPE(FishUtils, SettingsFlowCoordinator);
+    DEFINE_TYPE(FishUtils, MainSettingsViewController);
 
     void SettingsFlowCoordinator::DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling) {
         if(!firstActivation) {return;}
@@ -48,7 +48,9 @@ namespace FishUtils {
 
         getLogger().info("MainSettingsViewController activating");
 
+
         VerticalLayoutGroup* mainLayout = UIUtils::CreateListLikeVerticalLayout(this->get_rectTransform());
+
         Transform* mainLayoutTransform = mainLayout->get_rectTransform();
     
         UIUtils::CreateTitle(mainLayoutTransform, "Quality of Life Improvements");

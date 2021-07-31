@@ -166,7 +166,7 @@ namespace FishUtils::AutoSettings {
             new NJSMapElement(),
             new OffsetMapElement()
         };
-        getLogger().info("Map element types length: " + std::to_string(mapElementTypes.size()));
+        getLogger().info("Map element types length: %lu", mapElementTypes.size());
 
         return mapElementTypes;
     }
@@ -256,7 +256,7 @@ namespace FishUtils::AutoSettings {
 
     void SettingConfiguration::OverrideIfNecessary(PlayerSpecificSettings* playerSettings, IPreviewBeatmapLevel* level, IDifficultyBeatmap* difficulty) {
         static BeatmapLevelsModel* beatmapLevelsModel = UnityEngine::Resources::FindObjectsOfTypeAll<BeatmapLevelsModel*>()->values[0];
-        getLogger().info("Checking SettingConfiguration of type " + this->settingType->saveName + " to see if overriding is necessary");
+        getLogger().info("Checking SettingConfiguration of type %s to see if overriding is necessary", this->settingType->saveName.c_str());
 
         if(!playlistOverrideSetting.empty()) {
             getLogger().info("Playlist overrides enabled, checking first!");
@@ -264,11 +264,11 @@ namespace FishUtils::AutoSettings {
             std::string levelPlaylistName = to_utf8(csstrtostr(levelPlaylist->get_packName()));
 
             if(IsOverriddenInPlaylist(levelPlaylistName)) {
-                getLogger().info("Setting is overridden in this playlist (" + levelPlaylistName + "). Setting to " + playlistOverrideSetting);
+                getLogger().info("Setting is overridden in this playlist (%s). Setting to %s", levelPlaylistName.c_str(), playlistOverrideSetting.c_str());
                 this->settingType->Apply(playerSettings, this->playlistOverrideSetting);
                 return;
             }   else    {
-                getLogger().info("Setting is not overridden in this playlist (" + levelPlaylistName + "). Using thresholds instead");
+                getLogger().info("Setting is not overridden in this playlist (%s). Using thresholds instead", levelPlaylistName.c_str());
             }
         }
 
@@ -279,12 +279,12 @@ namespace FishUtils::AutoSettings {
         std::string chosenOption;
         int i = 0;
         while(true) {
-            getLogger().info("Checking for " + options[i]);
+            getLogger().info("Checking for %s", options[i].c_str());
             float threshold = thresholds[i];
-            getLogger().info("Value: " + std::to_string(threshold) + " Element value: " + std::to_string(elementValue));
+            getLogger().info("Value: %f Element value: %f", threshold, elementValue);
             if(elementValue > threshold) {
                 std::string option = options[i];
-                getLogger().info("Option found that is at threshold: " + option);
+                getLogger().info("Option found that is at threshold: %s", option.c_str());
                 chosenOption = option;
                 break;
             }
@@ -292,13 +292,13 @@ namespace FishUtils::AutoSettings {
             i++;
 
             if(i == options.size() - 1) {
-                getLogger().info("No thresholds met, using bottom option of " + options[i]);
+                getLogger().info("No thresholds met, using bottom option of %s", options[i].c_str());
                 chosenOption = options[i];
                 break;
             }
         }
 
-        getLogger().info("Overriding setting to " + chosenOption);
+        getLogger().info("Overriding setting to %s", chosenOption.c_str());
         this->settingType->Apply(playerSettings, chosenOption);
     }
 
@@ -355,7 +355,7 @@ namespace FishUtils::AutoSettings {
     }
 
     SettingConfiguration* CreateSettingConfiguration(SettingType* settingType) {
-        getLogger().info("Creating new config for setting type " + settingType->saveName);
+        getLogger().info("Creating new config for setting type %s", settingType->saveName.c_str());
         SettingConfiguration newConfig(settingType);
         loadedConfigs[settingType->saveName] = newConfig;
 
@@ -363,7 +363,7 @@ namespace FishUtils::AutoSettings {
     }
 
     void RemoveSettingConfiguration(SettingType* settingType) {
-        getLogger().info("Removing config for setting type " + settingType->saveName);
+        getLogger().info("Removing config for setting type %s", settingType->saveName.c_str());
         loadedConfigs.erase(settingType->saveName);
     }
 
@@ -432,16 +432,31 @@ namespace FishUtils::AutoSettings {
     PlayerSpecificSettings* PerformSettingOverrides(PlayerSpecificSettings* originalSettings, IPreviewBeatmapLevel* previewBeatmapLevel, IDifficultyBeatmap* difficultyBeatmap) {
         PlayerSpecificSettings* clonedSettings = CloneSettings(originalSettings);
         for(auto& pair : loadedConfigs) {
-            getLogger().info("Checking setting " + pair.second.settingType->saveName);
+            getLogger().info("Checking setting %s", pair.second.settingType->saveName.c_str());
             pair.second.OverrideIfNecessary(clonedSettings, previewBeatmapLevel, difficultyBeatmap);
         }
         
         getLogger().info("Checked all settings");
         return clonedSettings;
     }
+        
 
+    
     // Called when a non-multiplayer/solo/party level is started
-    MAKE_HOOK_OFFSETLESS(MenuTransitionsHelper_StartStandardLevel, void,
+    MAKE_HOOK_MATCH(MenuTransitionsHelper_StartStandardLevel, static_cast<void (MenuTransitionsHelper::*)(
+        Il2CppString*,
+        IDifficultyBeatmap*,
+        IPreviewBeatmapLevel*,
+        OverrideEnvironmentSettings*,
+        ColorScheme*,
+        GameplayModifiers*,
+        PlayerSpecificSettings*,
+        PracticeSettings*,
+        Il2CppString*,
+        bool,
+        System::Action*,
+        System::Action_2<StandardLevelScenesTransitionSetupDataSO*, LevelCompletionResults*>*)>(&MenuTransitionsHelper::StartStandardLevel),
+        void,
         MenuTransitionsHelper* self,
         Il2CppString* gameMode,
         IDifficultyBeatmap* difficultyBeatmap,
@@ -473,8 +488,23 @@ namespace FishUtils::AutoSettings {
         );
     }
 
+
     // Called when starting a multiplayer level
-    MAKE_HOOK_OFFSETLESS(MenuTransitionsHelper_StartMultiplayerLevel, void,
+    MAKE_HOOK_MATCH(MenuTransitionsHelper_StartMultiplayerLevel,  static_cast<void (MenuTransitionsHelper::*)(
+        Il2CppString*,
+        IPreviewBeatmapLevel*,
+        BeatmapDifficulty,
+        BeatmapCharacteristicSO*,
+        IDifficultyBeatmap*,
+        ColorScheme*,
+        GameplayModifiers*,
+        PlayerSpecificSettings*,
+        PracticeSettings*,
+        Il2CppString*,
+        bool,
+        System::Action*,
+        System::Action_2<MultiplayerLevelScenesTransitionSetupDataSO*, MultiplayerResultsData*>*,
+        System::Action_1<DisconnectedReason>*)>(&MenuTransitionsHelper::StartMultiplayerLevel), void,
         MenuTransitionsHelper* self,
         Il2CppString* gameMode,
         IPreviewBeatmapLevel* previewBeatmapLevel,
@@ -511,12 +541,7 @@ namespace FishUtils::AutoSettings {
     }
 
     void InstallHooks() {
-        INSTALL_HOOK_OFFSETLESS(getLogger(), MenuTransitionsHelper_StartStandardLevel,
-            il2cpp_utils::FindMethodUnsafe("", "MenuTransitionsHelper", "StartStandardLevel", 12)
-        );
-
-        INSTALL_HOOK_OFFSETLESS(getLogger(), MenuTransitionsHelper_StartMultiplayerLevel,
-            il2cpp_utils::FindMethodUnsafe("", "MenuTransitionsHelper", "StartMultiplayerLevel", 14)
-        );
+        INSTALL_HOOK(getLogger(), MenuTransitionsHelper_StartStandardLevel);
+        INSTALL_HOOK(getLogger(), MenuTransitionsHelper_StartMultiplayerLevel);
     }
 }

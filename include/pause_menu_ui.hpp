@@ -13,11 +13,6 @@
 DECLARE_CLASS_CODEGEN(FishUtils, PauseOptionsFlowCoordinator, HMUI::FlowCoordinator,
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
     DECLARE_OVERRIDE_METHOD(void, BackButtonWasPressed, il2cpp_utils::FindMethodUnsafe("HMUI", "FlowCoordinator", "BackButtonWasPressed", 1), HMUI::ViewController* topViewController);
-
-    REGISTER_FUNCTION(
-        REGISTER_METHOD(DidActivate);
-        REGISTER_METHOD(BackButtonWasPressed);
-    )
 )
 
 DECLARE_CLASS_CODEGEN(FishUtils, PauseButtonRemappingsViewController, HMUI::ViewController,
@@ -26,15 +21,7 @@ DECLARE_CLASS_CODEGEN(FishUtils, PauseButtonRemappingsViewController, HMUI::View
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
 
-    DECLARE_METHOD(void, Update);
-
-    REGISTER_FUNCTION(
-        REGISTER_FIELD(overridesObject);
-        REGISTER_FIELD(previewText);
-
-        REGISTER_METHOD(DidActivate);
-        REGISTER_METHOD(Update);
-    )
+    DECLARE_INSTANCE_METHOD(void, Update);
 public:
     std::vector<UnityEngine::UI::Toggle*> toggles;
     // Swaps the buttons from left -> right handed or vice-versa, setting their text to the correct option
@@ -45,20 +32,9 @@ DECLARE_CLASS_CODEGEN(FishUtils, ResumeSpeedViewController, HMUI::ViewController
     DECLARE_INSTANCE_FIELD(TMPro::TextMeshProUGUI*, scoreSubmissionText);
 
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
-    DECLARE_METHOD(void, RefreshScoreSubmissionText);
-
-    REGISTER_FUNCTION(
-        REGISTER_FIELD(scoreSubmissionText);
-
-        REGISTER_METHOD(DidActivate);
-        REGISTER_METHOD(RefreshScoreSubmissionText);
-    )
+    DECLARE_INSTANCE_METHOD(void, RefreshScoreSubmissionText);
 )
 
 DECLARE_CLASS_CODEGEN(FishUtils, PauseConfirmationViewController, HMUI::ViewController,
     DECLARE_OVERRIDE_METHOD(void, DidActivate, il2cpp_utils::FindMethodUnsafe("HMUI", "ViewController", "DidActivate", 3), bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling);
-
-    REGISTER_FUNCTION(
-        REGISTER_METHOD(DidActivate);
-    )
 )
