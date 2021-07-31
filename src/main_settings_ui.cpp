@@ -1,6 +1,5 @@
 #include "main_settings_ui.hpp"
 #include "pause_menu_ui.hpp"
-#include "game_start_ui.hpp"
 #include "ui_utils.hpp"
 #include "auto_settings_ui.hpp"
 #include "auto_settings.hpp"
@@ -58,11 +57,13 @@ namespace FishUtils {
 
         AutoSettingsFlowCoordinator* autoSettingsFlowCoordinator = BeatSaberUI::CreateFlowCoordinator<AutoSettingsFlowCoordinator*>();
         PauseOptionsFlowCoordinator* pauseFlowCoordinator = BeatSaberUI::CreateFlowCoordinator<PauseOptionsFlowCoordinator*>();
-        GameStartOptionsViewController* startOptionsViewController = BeatSaberUI::CreateViewController<GameStartOptionsViewController*>();
+        // Disabled as it's being moved into its own mod
+        //GameStartOptionsViewController* startOptionsViewController = BeatSaberUI::CreateViewController<GameStartOptionsViewController*>();
 
         CreateSubSettingsUI(mainLayoutTransform, "Automatic Settings", "Auto-change settings depending on NPS, NJS, offset or playlist", autoSettingsFlowCoordinator);
         CreateSubSettingsUI(mainLayoutTransform, "Pause Menu Settings", "Many pause-menu related tweaks", pauseFlowCoordinator);
-        CreateSubSettingsUI(mainLayoutTransform, "Game Start Tweaks", "Bypass the Health and Safety Menu & other options", startOptionsViewController);
+        // Disabled as it's being moved into its own mod
+        //CreateSubSettingsUI(mainLayoutTransform, "Game Start Tweaks", "Bypass the Health and Safety Menu & other options", startOptionsViewController);
     }
 
     // Sets only the size of the button background and bar, not the text itself

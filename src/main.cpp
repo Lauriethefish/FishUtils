@@ -2,8 +2,6 @@
 #include "main_settings_ui.hpp"
 #include "pause_menu_ui.hpp"
 #include "pause_tweaks.hpp"
-#include "game_start_ui.hpp"
-#include "game_start_tweaks.hpp"
 #include "auto_settings_ui.hpp"
 #include "auto_settings.hpp"
 
@@ -56,7 +54,6 @@ extern "C" void load() {
 
     getConfig().Load();
     FishUtils::PauseTweaks::Init();
-    FishUtils::GameStartTweaks::Init();
     FishUtils::AutoSettings::Init();
     getConfig().Write();
 
