@@ -9,6 +9,8 @@ using namespace System::Collections::Generic;
 #include "GlobalNamespace/BeatmapLevelPackCollection.hpp"
 #include "GlobalNamespace/IBeatmapLevelPack.hpp"
 
+#include "questui/shared/CustomTypes/Components/ExternalComponents.hpp"
+
 namespace FishUtils {
     DEFINE_TYPE(FishUtils, AutoSettingsFlowCoordinator);
     DEFINE_TYPE(FishUtils, AutoSettingSelectionViewController);
@@ -150,7 +152,7 @@ namespace FishUtils {
             });
 
             BeatSaberUI::CreateText(enabledLayoutTransform, "When in these playlists");
-
+            
             GridLayoutGroup* playlistsLayout = BeatSaberUI::CreateGridLayoutGroup(enabledLayoutTransform);
             playlistsLayout->set_padding(RectOffset::New_ctor(2, 2, 2, 2));
             playlistsLayout->set_constraint(GridLayoutGroup::Constraint::FixedColumnCount);
@@ -264,7 +266,7 @@ namespace FishUtils {
             if(i < setting->thresholds.size()) {
                 UIUtils::CreateSeparatorLine(thresholdsLayoutTransform);
                 BeatSaberUI::CreateIncrementSetting(thresholdsLayoutTransform,
-                    "^ Greater than ^",
+                    "Greater than",
                     2,
                     0.25f,
                     setting->thresholds[i],
