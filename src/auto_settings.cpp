@@ -254,13 +254,22 @@ namespace FishUtils::AutoSettings {
         this->configureBasedOn = elementType;
     }
 
+    static BeatmapLevelsModel* beatmapLevelsModel;
+
+    BeatmapLevelsModel* getBeatmapLevelsModel() {
+        if(!beatmapLevelsModel) {
+            beatmapLevelsModel = UnityEngine::Resources::FindObjectsOfTypeAll<BeatmapLevelsModel*>()->values[0];
+        }
+
+        return beatmapLevelsModel;
+    }
+
     void SettingConfiguration::OverrideIfNecessary(PlayerSpecificSettings* playerSettings, IPreviewBeatmapLevel* level, IDifficultyBeatmap* difficulty) {
-        static BeatmapLevelsModel* beatmapLevelsModel = UnityEngine::Resources::FindObjectsOfTypeAll<BeatmapLevelsModel*>()->values[0];
         getLogger().info("Checking SettingConfiguration of type %s to see if overriding is necessary", this->settingType->saveName.c_str());
 
         if(!playlistOverrideSetting.empty()) {
             getLogger().info("Playlist overrides enabled, checking first!");
-            IBeatmapLevelPack* levelPlaylist = beatmapLevelsModel->GetLevelPackForLevelId(level->get_levelID());
+            IBeatmapLevelPack* levelPlaylist = getBeatmapLevelsModel()->GetLevelPackForLevelId(level->get_levelID());
             std::string levelPlaylistName = to_utf8(csstrtostr(levelPlaylist->get_packName()));
 
             if(IsOverriddenInPlaylist(levelPlaylistName)) {
@@ -543,5 +552,9 @@ namespace FishUtils::AutoSettings {
     void InstallHooks() {
         INSTALL_HOOK(getLogger(), MenuTransitionsHelper_StartStandardLevel);
         INSTALL_HOOK(getLogger(), MenuTransitionsHelper_StartMultiplayerLevel);
+    }
+
+    void ClearCachedPointers() {
+        beatmapLevelsModel = nullptr;
     }
 }

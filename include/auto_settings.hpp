@@ -85,4 +85,7 @@ namespace FishUtils::AutoSettings {
     // Does nothing if there is no SettingConfiguration registered for this SettingType.
     // Any pointers to the SettingConfiguration will become invalid
     void RemoveSettingConfiguration(SettingType* settingType);
+
+    // Called on game soft-restart, clears cached pointers
+    void ClearCachedPointers();
 }
