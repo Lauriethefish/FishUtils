@@ -153,7 +153,7 @@ namespace FishUtils::AutoSettings {
         virtual float Get(IDifficultyBeatmap* difficulty) {
             BeatmapData* beatmapData = difficulty->get_beatmapData();
             IBeatmapLevelData* beatmapLevelData = difficulty->get_level()->get_beatmapLevelData();
-            int notesCount = beatmapData->get_cuttableNotesType();
+            int notesCount = beatmapData->get_cuttableNotesCount();
 
             // Find the notes per second
             return notesCount / beatmapLevelData->get_audioClip()->get_length();

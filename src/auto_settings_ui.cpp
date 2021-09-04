@@ -63,8 +63,8 @@ namespace FishUtils {
             availableSettings.push_back(settingType->name);
         }
 
-        std::function<void(std::string)> onSelectedSettingChange = [this] (std::string newSetting) {
-            this->selectedSetting = AutoSettings::GetSettingType(newSetting, false);
+        std::function<void(std::string_view)> onSelectedSettingChange = [this] (std::string_view newSetting) {
+            this->selectedSetting = AutoSettings::GetSettingType(std::string(newSetting), false);
             this->selectedSettingConfig = AutoSettings::GetSettingConfiguration(selectedSetting);
 
             // We need to force this to be called initially, even if it was previously enabled on the last setting
@@ -147,8 +147,8 @@ namespace FishUtils {
             this->enabledLayoutGameObject = enabledLayout->get_gameObject();
             Transform* enabledLayoutTransform = enabledLayout->get_rectTransform();
 
-            this->setSettingToDropdown = BeatSaberUI::CreateDropdown(enabledLayoutTransform, "Set the setting to", "None", {"None"}, [this](std::string newValue) {
-                this->setting->playlistOverrideSetting = newValue;
+            this->setSettingToDropdown = BeatSaberUI::CreateDropdown(enabledLayoutTransform, "Set the setting to", "None", {"None"}, [this](std::string_view newValue) {
+                this->setting->playlistOverrideSetting = std::string(newValue);
             });
 
             BeatSaberUI::CreateText(enabledLayoutTransform, "When in these playlists");
@@ -224,9 +224,9 @@ namespace FishUtils {
                 mapElements.push_back(elementType->name);
             }
 
-            this->parameterDropdown = BeatSaberUI::CreateDropdown(mainLayoutTransform, "Map Parameter", mapElements[0], mapElements, [this](std::string newValue){
-                getLogger().info("Changing map element type to %s", newValue.c_str());
-                this->setting->SetConfigureBasedOn(AutoSettings::GetMapElementType(newValue, false));
+            this->parameterDropdown = BeatSaberUI::CreateDropdown(mainLayoutTransform, "Map Parameter", mapElements[0], mapElements, [this](std::string_view newValue){
+                getLogger().info("Changing map element type to %s", std::string(newValue).c_str());
+                this->setting->SetConfigureBasedOn(AutoSettings::GetMapElementType(std::string(newValue), false));
                 this->RefreshThresholdSettings();
             });
 
