@@ -73,7 +73,7 @@ LOCAL_SHARED_LIBRARIES += questui
 LOCAL_SHARED_LIBRARIES += custom-types
 LOCAL_SHARED_LIBRARIES += bs-utils
 LOCAL_LDLIBS += -llog
-LOCAL_CFLAGS += -I'extern/libil2cpp/il2cpp/libil2cpp' -DID='"fish-utils"' -DVERSION='"0.1.1"' -I'./shared' -I'./extern' -isystem'extern/codegen/include' -save-temps=obj
+LOCAL_CFLAGS += -I'extern/libil2cpp/il2cpp/libil2cpp' -DID='"fish-utils"' -DVERSION='"0.1.2"' -I'./shared' -I'./extern' -isystem'extern/codegen/include' -save-temps=obj
 LOCAL_CPPFLAGS += -std=c++2a
 LOCAL_C_INCLUDES += ./include ./src
 #LOCAL_SHARED_LIBRARIES += bs-utils
